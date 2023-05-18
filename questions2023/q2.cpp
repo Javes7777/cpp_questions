@@ -1,29 +1,40 @@
 #include<iostream>
 using namespace std;
 
-int[] remove_duplicate(const int arr[]) {
-    int arr2[sizeof(arr)];
-    int temp = arr[0];
-    int k = 0;
-    for(int i=1;i<sizeof(arr);i++) {
-        int j=i;
-        for(;j<sizeof(arr);j++) {
-            if(arr[j] == temp) 
-                break;
-        }
-        if(j == sizeof(arr)) {
-            arr2[k] = arr[i];
-            k++;
+int remove_duplicate(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        for (int j = i + 1; j < size; j++) {
+            if (arr[i] == arr[j]) {
+                for (int k = j; k < size - 1; k++) {
+                    arr[k] = arr[k + 1];
+                }
+                size--; 
+                j--; 
+            }
         }
     }
-    return arr2;
+    return size;
+}
+
+void displayArray(int arr[], int size) {
+    for(int i=0; i<size; i++) {
+        cout<< arr[i]<<" ";
+    }
+    cout<<endl;
 }
 
 int main() {
-    int arr[] = {1,2,3,4,5,6,7,8};
-    int arr2[] = remove_duplicate(arr);
-    for(int i=0;i<sizeof(arr2);i++) {
-        cout<< arr2[i]<<" ";
-    }
+    int arr[] = {1,2,1,3,4,4,5,6,4,7,8};
+    int size = sizeof(arr) / sizeof(arr[0]);
+    
+    cout << "Initial Array: " <<endl;
+    displayArray(arr, size);
+
+    int new_size = remove_duplicate(arr, size);
+
+    cout << "After removing duplicates: "<<endl;
+    displayArray(arr, new_size);
+    
+    
     return 0;
 }
