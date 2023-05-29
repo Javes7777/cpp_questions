@@ -9,79 +9,116 @@
 // g. Insert a string in another string at a user specified position
 
 #include<iostream>
+#include<string> 
+#include <cstdlib>
 using namespace std;
 
-class myString {
-    private:
-        char* hyperString;
-        int size;
-    public:
-        myString(const int);
-        ~myString();
-        int compare(const myString B) const;
-        bool reverse();
-        bool concatenate(const myString B);
-        int getSize() const;
-        void printAddress() const;
-        bool swapCase(const bool casing=false, const bool allLetters=true); // false for lowercase, true for uppercase
-        bool insertInto(const myString B, const int index=0);
-        void printString() const;
-};
-
-myString::myString(const int length) {
-    size = abs(length);
-    hyperString = new char[size];
+void getStringInput(string& str) {
+    cout << "Enter a string: ";
+    cin>>str;
+    cout << "You entered: " << str << endl;
 }
 
-myString::~myString() {
-    delete [] this->hyperString;
+void printCharacterAddresses(const string& str) {
+    cout << "Character addresses in the string:\n";
+    for (const char& c : str) {
+        const void* address = static_cast<const void*>(&c);
+        cout << "Character '" << c << "': " << address << endl;
+    }
 }
 
-int myString::compare(const myString B) const {
-    // Compares the ascii values of two strings.
-    // return -1 if this string is bigger than B
-    // return 1 if this string is smaller than B
-    // return 0 if they are equal
-    // return 2 for some other error reporting
-    return 0;
-}
+bool compareStrings(const std::string& str1, const std::string& str2) {
+    if (str1.length() != str2.length()) {
+        return false;
+    }
 
-bool myString::reverse() {
-    // true for successfull reversal
-    // false for error reporting.
+    for (size_t i = 0; i < str1.length(); ++i) {
+        if (str1[i] != str2[i]) {
+            return false;
+        }
+    }
+
     return true;
 }
 
-int myString::getSize() const {
-    return this->size;
+int calculateStringSize(const string& str) {
+    int size = 0;
+    while (str[size] != '\0') {
+        ++size;
+    }
+    return size;
 }
 
-void myString::printAddress() const {
-    // print address of each char in the string.
+
+string convertToLowercase(const string& str) {
+    string result = str;
+    for (char& c : result) {
+        if (c >= 'a' && c <= 'z') {
+            c -= 'a' - 'A';
+        }
+    }
+    return result;
 }
 
-bool myString::swapCase(const bool casing=false, const bool allLetters=true) {
-    // false for lowercase, true for uppercase
-    // allLetters true for swapping all letters.
-    // return true for successfull swap, false for error.
-    return true;
+void printString(const string& str) {
+    int index = 0;
+    while (str[index] != '\0') {
+        cout << str[index];
+        ++index;
+    }
 }
 
-bool myString::insertInto(const myString B, const int index=0) {
-    // inserts string B into this string at index
-    // true for successfull insert
-    return true;
+void reverseString(string& str) {
+    if (&str == nullptr)
+        return;
+
+    int length = 0;
+    while (str[length] != '\0') {
+        ++length;
+    }
+
+    int start = 0;
+    int end = length - 1;
+
+    while (start < end) {
+        char temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
+        ++start;
+        --end;
+    }
 }
 
-bool myString::concatenate(const myString B) {
-    //joins two strings 
-    // return true for success.
-    return true;
+void insertString(string& dest, string& src, int index) {
+    if (&dest == nullptr || &src == nullptr)
+        return;
+
+    int destLength = 0;
+    while (dest[destLength] != '\0') {
+        ++destLength;
+    }
+
+    int srcLength = 0;
+    while (src[srcLength] != '\0') {
+        ++srcLength;
+    }
+
+    if (index < 0 || index > destLength)
+        return;
+
+    int totalLength = destLength + srcLength;
+
+    for (int i = totalLength; i >= index + srcLength; --i) {
+        dest[i] = dest[i - srcLength];
+    }
+
+    for (int i = 0; i < srcLength; ++i) {
+        dest[index + i] = src[i];
+    }
 }
 
-void myString::printString() const {
-    //print this string
-}
+
+
 
 void printMenu() {
     cout<<endl;
@@ -95,63 +132,86 @@ void printMenu() {
     cout<<"Enter your choice, press any other character to exit"<<endl;
 }
 
-myString getString() {
-    //take input and return a string
-    myString temp(0);
-    return temp;
-}
-
 void runMenu() {
     int choice = -1;
-    myString A, B;
+    bool allLetters(1), casing(1);
+    char input;      
+    int index=0;
+
+    string A,B;
 
     while(true) {
         printMenu();
         cin>>choice;
         switch (choice) {
             case 1:
-                A = getString();
+                getStringInput(A); 
+                printCharacterAddresses(A); 
                 break;
             case 2:
-                A = getString();
-                B = getString();
-                A.concatenate(B);
-                A.printString();
+                cout<<"Enter first string: "<<endl;
+                getStringInput(A);
+                cout<<"Enter second string: "<<endl;
+                getStringInput(B);
+                cout<<"Concatinating these strings...."<<endl;
+                insertString(A, B, calculateStringSize(A));
+                printString(A);
                 break;
             case 3:
-                A = getString();
-                B = getString();
-                A.compare(B);
+                cout<<"Enter first string: "<<endl;
+                getStringInput(A);
+                cout<<"Enter second string: "<<endl;
+                getStringInput(B);
+                if (compareStrings(A, B)) {
+                    cout << "The strings are equal." << endl;
+                } else {
+                    cout << "The strings are not equal." << endl;
+                }
                 break;
             case 4:
-                A.getSize();
+                getStringInput(A);
+                cout<<"Size of string: "<<calculateStringSize(A);
                 break;
             case 5:
-                A = getString();
-                // get input about how to swap
-                A.swapCase();
+                cout<<"Enter a string"<<endl;
+                getStringInput(A);
+                A = convertToLowercase(A);
+                printString(A);
                 break;
             case 6:
-                A.reverse();
+                cout<<"Enter a string"<<endl;
+                getStringInput(A);
+                reverseString(A);
+                printString(A); 
                 break;
             case 7:
-                A.insertInto(B);
+                cout<<"Enter first string: "<<endl;
+                getStringInput(A);
+                cout<<"Enter second string: "<<endl;
+                getStringInput(B);
+
+                cout<<"Enter index where you want to insert"<<endl;
+                cin>>index;
+                insertString(A, B, index);
+                printString(A);
                 break;
             default:
-                break;
+                return;
         }
     }
 } 
 
 int main() {
+    cout<<"Welcome"<<endl;
     try {
         runMenu();
     } 
-    catch exception {
+    catch (string message) {
+        cerr<<message<<endl;
         cerr<<"Error in main thread."<<endl;
         return 1;
     }
-    
-    cout<<"Thank you for using this program."
+ 
+    cout<<"Thank you for using this program."<<endl;
     return 0;
 }
