@@ -2,7 +2,52 @@
 using namespace std;
 
 
+
 int main() {
+    int *ptr;
+    int marks[5];
+
+    cout << "Enter the elements of array: " << endl;
+
+    for (int i=0; i<5; i++) {
+        cin>>marks[i];
+    }
+    
+    ptr=marks;
+
+    cout << "value of *ptr is: " << *ptr << endl;
+
+    cout << "value of *marks is: " << *marks << endl;
+
+    cout << "Printing the array ptr: "<< endl;
+
+    for(int i=0;i<5; i++) {
+        cout << ptr[i] << endl;
+    }
+
+    cout << "using ptr array of strings" << endl;
+    
+    char *names[3];  /// going to give an error in c++=11
+
+    cout << "Enter 3 names: "<< endl;
+
+    for(int i=0;i<3; i++) {
+        cin >> names[i];
+    }
+
+    cout<< "Entered names are: " << endl;
+
+    for (int i=0; i<3; i++) {
+        cout << names[i] << endl; 
+    }
+
+
+    return 0;
+}
+
+
+
+//int main() {
 //    int  var = 20;   // actual variable declaration.
 //    int  *ip;        // pointer variable 
 //
@@ -26,21 +71,21 @@ int main() {
 //    cout << "Value and address of ip2: " << *ip2 << " , " << &ip << endl;
 
 
-    char a = 'a';  
-    char *b;  
-    char ** c;  
-    a = 'g';  
-    b = &a;  
-    c = &b;
-
-
-    cout << " value and address of a: " << a << " , " << &a << endl;
-    cout << " value, address and address stored in b: " << b << " , " << *b << " , " << &b << endl;
-
-    cout << " value, address and address stored in c: " << c << " , " << *c << " , " << &c << endl;
-
-    return 0;
-}
+//    char a = 'a';  
+//    char *b;  
+//    char ** c;  
+//    a = 'g';  
+//    b = &a;  
+//    c = &b;
+//
+//
+//    cout << " value and address of a: " << a << " , " << &a << endl;
+//    cout << " value, address and address stored in b: " << b << " , " << *b << " , " << &b << endl;
+//
+//    cout << " value, address and address stored in c: " << c << " , " << *c << " , " << &c << endl;
+//
+//    return 0;
+//}
 
 
 
